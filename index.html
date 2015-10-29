@@ -8,9 +8,136 @@
 
 <body ng-app="myApp">
 
-	<div ng-controller="HelloController" >
+	<div ng-controller="HelloController">
     	<h2>Hello {{title}} !</h2>
-	</div>
+    	
+    	<!-- Interpolation directive -->
+    	<span>{{myData.text}}</span><br>
+    	<span>{{myData.textf()}}</span>
+    	
+    	<!-- The ng-bind directive is an alternative to the interpolation directive. -->
+    	<span ng-bind="myData.textf()"></span>
+    	
+    	<!-- Escaping HTML From The Model -->
+    	<span ng-bind-html-unsafe="myData.textf()"></span>
+    	
+    	<!-- The ng-show and ng-hide directives are used to show or hide an HTML element depending on data in the model. -->
+    	<div ng-controller="HelloController" >
+      		<span ng-show="myData.setElementVisibility">xxx</span>
+      		<span ng-hide="myData.setElementVisibility">zzz</span>
+  		</div>
+    	
+    	<!-- The ng-switch directive is used if you want to add or remove HTML elements from the DOM based on data in the model. -->
+    	<div ng-switch on="myData.switch">
+        	<div ng-switch-when="1">Shown when switch is 1</div>
+        	<div ng-switch-when="2">Shown when switch is 2</div>
+        	<div ng-switch-default>Shown when switch is anything else than 1 and 2</div>
+        </div>
+        
+        <!-- The ng-if directive can include / remove HTML elements from the DOM, just like the ng-switch directive, but it has a simpler syntax. -->
+        <div ng-if="myData.setElementVisibility">ng-if Show it</div>
+        
+        <!-- The ng-include directive can be used to include HTML fragments from other files into the view's HTML template. -->
+        <div ng-include="'angular-included-fragment.html'"></div>
+        <!-- warunkowe za³¹czanie plików -->
+        <div ng-include="myData.setIfIncludeFile && 'fragment-1.html' || 'fragment-2.html'"></div>
+        
+        <!-- The ng-repeat directive is used to iterate over a collection of items and generate HTML from it. -->
+        <ol>
+   			<li ng-repeat="theItem in myData.items">{{theItem.text}}</li>
+		</ol>
+		<!--  iterate over collections returned from a function call. -->
+		<ol>
+   			<li ng-repeat="theItem in myData.getItems()">{{theItem.text}}</li>
+		</ol>
+		<!-- iterate over the properties of a JavaScript object using a slightly different syntax: -->
+		<ol>
+   			<li ng-repeat="(name, value) in myData.myObject">{{name}} = {{value}}</li>
+		</ol>
+		
+		<!-- Special ng-repeat Variables -->
+		<ol>
+   			<li ng-repeat="theItem in myData.items">
+   				{{theItem.text}}
+   				<span ng-if="$first">first element </span>
+   				<span ng-if="$middle">middle element </span>
+   				<span ng-if="$last">last element </span>
+   				<span>index: {{$index}} </span>
+   			</li>
+		</ol>
+		
+		<!-- Repeating Multiple Elements -->
+		<div ng-repeat="(name, value) in myData.myObject">
+		   <span>{{name}}</span>
+		   <span>{{value}}</span>
+		</div>
+		
+		<ol>
+		    <li ng-repeat-start="(name, value) in myData.myObject">{{name}}</li>
+		    <li ng-repeat-end>{{value}}</li>
+		</ol>
+		
+		<!-- Filtering The itemFilter is the name of the filter function. -->
+		<div ng-repeat="item in myData.items | filter: itemFilter">Defferent from two</div>
+		
+		<!-- Formatting Filters: date, currency, number, lowercase, uppercase, json - Converts the variable to a JSON string -->
+		<span>{{myData.theDate() | date: 'dd-MM-yyyy'}}</span>
+		<span>{{myData.theNumber | number: 2}}</span>
+		
+		<!-- Array Filters: limitTo, filter, orderBy -->
+		<span>{{myData.theText | limitTo: 3}}</span>
+		
+		<ol>
+		    <li ng-repeat="item in myData.items | filter:filterArray">
+		        {{item.text}} : {{$first}}, {{$middle}}, {{$last}}
+		    </li>
+		</ol>
+		
+		<ol>
+		    <li ng-repeat="item in myData.items | orderBy:sortField:reverse">
+		        {{item.text}} : {{$first}}, {{$middle}}, {{$last}}
+		    </li>
+		</ol>
+		<span>{{myData.theText | limitTo: 5 | uppercase}}</span>
+		
+		<!-- Assigning Filter Output To Variables -->
+		<ol>
+		    <li ng-repeat="item in filteredItems = ( myData.items | filter:filterArray) ">
+		        {{item.text}} : {{$first}}, {{$middle}}, {{$last}}
+		    </li>
+		</ol>
+		<div>{{filteredItems.length}}</div>
+		
+		<!-- Implementing Custom Filters -->
+		<div>Filtered: {{myData.text | myFilter}}</div>    
+		<div>Filtered: {{myData.text | myFilter2:2:5}}</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+    </div>
 	
 	<script src="js/controllers/HelloController.js"></script>
 	
